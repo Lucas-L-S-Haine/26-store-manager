@@ -3,14 +3,12 @@ const productsController = require('../controllers/productsController');
 
 const productsRouter = express.Router();
 
-// router.post('/', async (req, res, next) => {
-productsRouter
+/* productsRouter
   .route('/')
   .post(productsController.insert)
-  .get((req, res) => res.status(200).send({ message: 'GET /products works!' }));
-//   try {
-//     const insertedProduct = insert(req.body)
-//   } catch(err) {
-//   }
+  .get((req, res) => res.status(200).send({ message: 'GET /products works!' })); */
+
+productsRouter.post('/', productsController.insert);
+productsRouter.get('/', (req, res) => res.status(200).send({ message: 'GET /products works!' }));
 
 module.exports = productsRouter;

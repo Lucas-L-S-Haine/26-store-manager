@@ -1,0 +1,9 @@
+http://localhost:3000
+
+Content-Type: application/json; charset=utf-8
+
+POST /sales
+{
+  name: "Produto do Batista",
+  quantity: 100
+}

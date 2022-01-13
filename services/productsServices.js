@@ -8,18 +8,17 @@ const productSchema = Joi.object({
   quantity: Joi.number().min(1).required(),
 });
 
-const throwError = (err) => (err);
+const newError = (err) => (err);
 
-const newProduct = async (product) => {
+const productValidate = async (product) => {
   const { error } = productSchema.validate(product);
 
   if (error) {
-    throw throwError({ status: 422, message: error.message });
-    // throw { status: 422, message: error.message };
+    throw newError({ status: 422, message: error.message });
   }
 
   if (await productsModel.findProductByName(product.name)) {
-    throw throwError({ status: 422, message: 'Product already exists' });
+    throw newError({ status: 422, message: 'Product already exists' });
   }
 
   const createdProduct = await productsModel.insertProduct(product);
@@ -32,6 +31,6 @@ const productList = async () => {
 };
 
 module.exports = {
-  newProduct,
+  productValidate,
   productList,
 };

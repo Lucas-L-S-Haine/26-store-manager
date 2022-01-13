@@ -4,6 +4,6 @@ Content-Type: application/json; charset=utf-8
 
 POST /products
 {
-  name: "Produto do Batista",
-  quantity: 100
+  "name": "Bass",
+  "quantity": 0
 }

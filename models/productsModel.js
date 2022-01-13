@@ -7,6 +7,13 @@ const insertProduct = async (product) => {
   return newProduct;
 };
 
+const findProductByName = async (name) => {
+  const newConnection = await connection();
+  const product = await newConnection
+    .collection('products').findOne({ name });
+  return product;
+};
+
 const listProducts = async () => {
   const newConnection = await connection();
   const productsList = await newConnection
@@ -17,4 +24,5 @@ const listProducts = async () => {
 module.exports = {
   insertProduct,
   listProducts,
+  findProductByName,
 };

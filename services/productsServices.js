@@ -10,12 +10,15 @@ const productSchema = Joi.object({
 
 const newProduct = async (product) => {
   const { error } = productSchema.validate(product);
-  console.log('erro de produto', error);
 
   if (error) {
     // const productError = new Error({ status: 422, message: error.message });
     // throw productError;
     throw { status: 422, message: error.message };
+  }
+
+  if (await productsModel.findProductByName(product.name)) {
+    throw { status: 422, message: 'Product already exists' };
   }
 
   const createdProduct = await productsModel.insertProduct(product);

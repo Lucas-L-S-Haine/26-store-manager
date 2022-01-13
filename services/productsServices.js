@@ -8,17 +8,18 @@ const productSchema = Joi.object({
   quantity: Joi.number().min(1).required(),
 });
 
+const throwError = (err) => (err);
+
 const newProduct = async (product) => {
   const { error } = productSchema.validate(product);
 
   if (error) {
-    // const productError = new Error({ status: 422, message: error.message });
-    // throw productError;
-    throw { status: 422, message: error.message };
+    throw throwError({ status: 422, message: error.message });
+    // throw { status: 422, message: error.message };
   }
 
   if (await productsModel.findProductByName(product.name)) {
-    throw { status: 422, message: 'Product already exists' };
+    throw throwError({ status: 422, message: 'Product already exists' });
   }
 
   const createdProduct = await productsModel.insertProduct(product);

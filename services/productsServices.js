@@ -7,6 +7,8 @@ const productSchema = Joi.object({
   }),
   quantity: Joi.number().min(1).required(),
 });
+const nameSchema = Joi.string().min(5).required();
+const quantitySchema = Joi.number().min(1).required();
 
 const newError = (err) => (err);
 
@@ -33,8 +35,18 @@ const productShow = async (id) => {
 };
 
 const updatedProductValidate = async (id, name, quantity) => {
+  const { nameError } = nameSchema.validate(name);
+  const { quantityError } = quantitySchema.validate(quantity);
+  console.log('services', id, name, quantity);
+  if (nameError) {
+    throw newError({ status: 422, message: nameError.message });
+  }
+  if (quantityError) {
+    throw newError({ status: 422, message: quantityError.message });
+  }
   const listedProduct = await productsModel
     .updateProduct(id, name, quantity);
+  console.log(listedProduct);
   return listedProduct;
 };
 

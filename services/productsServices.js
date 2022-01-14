@@ -7,18 +7,20 @@ const productSchema = Joi.object({
   }),
   quantity: Joi.number().min(1).required(),
 });
-const nameSchema = Joi.string().min(5).required();
+const nameSchema = Joi.string().min(5).required().messages({
+  'string.min': '"name" length must be at least 5 characters long',
+});
 const quantitySchema = Joi.number().min(1).required();
 
-const newError = (err) => (err);
+const newValidate = (err) => (err);
 
 const newProductValidate = async (product) => {
   const { error } = productSchema.validate(product);
   if (error) {
-    throw newError({ status: 422, message: error.message });
+    throw newValidate({ status: 422, message: error.message });
   }
   if (await productsModel.findProductByName(product.name)) {
-    throw newError({ status: 422, message: 'Product already exists' });
+    throw newValidate({ status: 422, message: 'Product already exists' });
   }
   const createdProduct = await productsModel.insertProduct(product);
   return createdProduct;
@@ -35,14 +37,13 @@ const productShow = async (id) => {
 };
 
 const updatedProductValidate = async (id, name, quantity) => {
-  const { nameError } = nameSchema.validate(name);
-  const { quantityError } = quantitySchema.validate(quantity);
-  console.log('services', id, name, quantity);
-  if (nameError) {
-    throw newError({ status: 422, message: nameError.message });
+  const nameValidate = nameSchema.validate(name);
+  const quantityValidate = quantitySchema.validate(quantity);
+  if (nameValidate.error) {
+    throw newValidate({ status: 422, message: nameValidate.error.message });
   }
-  if (quantityError) {
-    throw newError({ status: 422, message: quantityError.message });
+  if (quantityValidate.error) {
+    throw newValidate({ status: 422, message: quantityValidate.error.message });
   }
   const listedProduct = await productsModel
     .updateProduct(id, name, quantity);

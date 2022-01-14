@@ -15,15 +15,15 @@ const quantitySchema = Joi.number().min(1).required().messages({
   'number.base': '"quantity" must be a number',
 });
 
-const newValidate = (err) => (err);
+const newError = (err) => (err);
 
 const newProductValidate = async (product) => {
   const { error } = productSchema.validate(product);
   if (error) {
-    throw newValidate({ status: 422, message: error.message });
+    throw newError({ status: 422, message: error.message });
   }
   if (await productsModel.findProductByName(product.name)) {
-    throw newValidate({ status: 422, message: 'Product already exists' });
+    throw newError({ status: 422, message: 'Product already exists' });
   }
   const createdProduct = await productsModel.insertProduct(product);
   return createdProduct;
@@ -43,10 +43,10 @@ const updatedProductValidate = async (id, name, quantity) => {
   const nameValidate = nameSchema.validate(name);
   const quantityValidate = quantitySchema.validate(quantity);
   if (nameValidate.error) {
-    throw newValidate({ status: 422, message: nameValidate.error.message });
+    throw newError({ status: 422, message: nameValidate.error.message });
   }
   if (quantityValidate.error) {
-    throw newValidate({ status: 422, message: quantityValidate.error.message });
+    throw newError({ status: 422, message: quantityValidate.error.message });
   }
   const listedProduct = await productsModel
     .updateProduct(id, name, quantity);

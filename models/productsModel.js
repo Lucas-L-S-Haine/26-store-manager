@@ -54,13 +54,13 @@ const deleteProduct = async (id) => {
     const newConnection = await connection();
     const product = await newConnection.collection('products')
       .findOne(productId);
-    const deletedStatus = await newConnection.collection('products')
-      .deleteOne({ _id: productId });
-    return { product, deletedStatus };
+    await newConnection.collection('products').deleteOne({ _id: productId });
+    return product;
   } catch (err) {
     return { err: {
       code: 'invalid_data',
       message: 'Wrong id format',
+      status: 422,
     } };
   }
 };

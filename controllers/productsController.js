@@ -57,9 +57,15 @@ const updateProduct = async (req, res, next) => {
 };
 
 const deleteProduct = async (req, res) => {
-  const { id } = req.params;
-  const deletedProduct = await deletedProductValidate(id);
-  return res.status(200).json(deletedProduct);
+  try {
+    const { id } = req.params;
+    const deletedProduct = await deletedProductValidate(id);
+    return res.status(200).json(deletedProduct);
+  } catch (err) {
+    const { code, message, status } = err;
+    console.log(code, message, status);
+    return res.status(status).json({ err: { code, message } });
+  }
 };
 
 module.exports = {

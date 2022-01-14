@@ -35,7 +35,7 @@ const productShow = async (id) => {
   return listedProduct;
 };
 
-const productWrite = async (id, name, quantity) => {
+const updatedProductValidate = async (id, name, quantity) => {
   const listedProduct = await productsModel
     .updateProduct(id, name, quantity);
   return listedProduct;
@@ -45,5 +45,5 @@ module.exports = {
   newProductValidate,
   productList,
   productShow,
-  productWrite,
+  updatedProductValidate,
 };

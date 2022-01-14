@@ -48,6 +48,23 @@ const updateProduct = async (id, name, quantity) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    const productId = new ObjectId(id);
+    const newConnection = await connection();
+    const product = await newConnection.collection('products')
+      .findOne(productId);
+    const deletedStatus = await newConnection.collection('products')
+      .deleteOne({ _id: productId });
+    return { product, deletedStatus };
+  } catch (err) {
+    return { err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    } };
+  }
+};
+
 const listProducts = async () => {
   const newConnection = await connection();
   const productsList = await newConnection
@@ -61,4 +78,5 @@ module.exports = {
   findProductById,
   findProductByName,
   updateProduct,
+  deleteProduct,
 };

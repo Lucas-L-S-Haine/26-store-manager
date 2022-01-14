@@ -1,6 +1,6 @@
 const {
   productList, newProductValidate, productShow,
-  updatedProductValidate,
+  updatedProductValidate, deletedProductValidate,
 } = require('../services/productsServices');
 
 const insert = async (req, res, next) => {
@@ -56,9 +56,16 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const deletedProduct = await deletedProductValidate(id);
+  return res.status(200).json(deletedProduct);
+};
+
 module.exports = {
   insert,
   getAll,
   getProduct,
   updateProduct,
+  deleteProduct,
 };

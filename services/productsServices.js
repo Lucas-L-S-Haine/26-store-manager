@@ -48,10 +48,17 @@ const updatedProductValidate = async (id, name, quantity) => {
   if (quantityValidate.error) {
     throw newError({ status: 422, message: quantityValidate.error.message });
   }
-  const listedProduct = await productsModel
+  const updatedProduct = await productsModel
     .updateProduct(id, name, quantity);
-  console.log(listedProduct);
-  return listedProduct;
+  return updatedProduct;
+};
+
+const deletedProductValidate = async (id) => {
+  const deletedProduct = await productsModel.deleteProduct(id);
+  if (deletedProduct.deletedStatus.deletedCount !== 1) {
+    throw newError({ status: 422, message: 'Wrong id format' });
+  }
+  return deletedProduct.product;
 };
 
 module.exports = {
@@ -59,4 +66,5 @@ module.exports = {
   productList,
   productShow,
   updatedProductValidate,
+  deletedProductValidate,
 };

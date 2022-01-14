@@ -16,13 +16,6 @@ const findProductByName = async (name) => {
   return product;
 };
 
-const listProducts = async () => {
-  const newConnection = await connection();
-  const productsList = await newConnection
-    .collection('products').find().toArray();
-  return productsList;
-};
-
 const findProductById = async (id) => {
   try {
     const productId = new ObjectId(id);
@@ -36,6 +29,13 @@ const findProductById = async (id) => {
       message: 'Wrong id format',
     } };
   }
+};
+
+const listProducts = async () => {
+  const newConnection = await connection();
+  const productsList = await newConnection
+    .collection('products').find().toArray();
+  return productsList;
 };
 
 module.exports = {

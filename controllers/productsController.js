@@ -1,12 +1,12 @@
 const {
-  productList, productValidate, productShow,
+  productList, newProductValidate, productShow,
   productWrite,
 } = require('../services/productsServices');
 
 const insert = async (req, res, next) => {
   try {
     const product = req.body;
-    const response = await productValidate(product);
+    const response = await newProductValidate(product);
     return res.status(201).json(response.ops[0]);
   } catch (err) {
     // console.error('Error:', err.message);

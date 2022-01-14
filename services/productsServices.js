@@ -10,7 +10,7 @@ const productSchema = Joi.object({
 
 const newError = (err) => (err);
 
-const productValidate = async (product) => {
+const newProductValidate = async (product) => {
   const { error } = productSchema.validate(product);
 
   if (error) {
@@ -42,7 +42,7 @@ const productWrite = async (id, name, quantity) => {
 };
 
 module.exports = {
-  productValidate,
+  newProductValidate,
   productList,
   productShow,
   productWrite,

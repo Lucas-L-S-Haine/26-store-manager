@@ -20,18 +20,15 @@ const listProducts = async () => {
   const newConnection = await connection();
   const productsList = await newConnection
     .collection('products').find().toArray();
-  console.log('model', productsList);
   return productsList;
 };
 
 const findProductById = async (id) => {
-  console.log('aqui');
   try {
     const productId = new ObjectId(id);
     const newConnection = await connection();
     const product = await newConnection
       .collection('products').findOne(productId);
-    console.log('model', product, id);
     return product;
   } catch (err) {
     return { err: {

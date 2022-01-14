@@ -31,9 +31,7 @@ const productList = async () => {
 };
 
 const productShow = async (id) => {
-  console.log(id, typeof id);
   const listedProduct = await productsModel.findProductById(id);
-  console.log('service', listedProduct);
   return listedProduct;
 };
 

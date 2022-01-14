@@ -28,8 +28,10 @@ const getProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await productShow(id);
-    console.log('controller', product, id);
-    return res.status(422).json(product);
+    if (product.err) {
+      return res.status(422).json(product);
+    }
+    return res.status(200).json(product);
   } catch (err) {
     console.error(err.message);
     next(err);

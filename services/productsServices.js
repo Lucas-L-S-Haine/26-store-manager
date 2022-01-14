@@ -12,6 +12,7 @@ const nameSchema = Joi.string().min(5).required().messages({
 });
 const quantitySchema = Joi.number().min(1).required().messages({
   'number.min': '"quantity" must be larger than or equal to 1',
+  'number.base': '"quantity" must be a number',
 });
 
 const newValidate = (err) => (err);

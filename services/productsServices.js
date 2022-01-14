@@ -10,7 +10,9 @@ const productSchema = Joi.object({
 const nameSchema = Joi.string().min(5).required().messages({
   'string.min': '"name" length must be at least 5 characters long',
 });
-const quantitySchema = Joi.number().min(1).required();
+const quantitySchema = Joi.number().min(1).required().messages({
+  'number.min': '"quantity" must be larger than or equal to 1',
+});
 
 const newValidate = (err) => (err);
 

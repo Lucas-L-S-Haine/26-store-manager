@@ -4,6 +4,6 @@ Content-Type: application/json; charset=utf-8
 
 POST /products
 {
-  "name": "Fender JazzBass",
+  "name": "Contrabaixo Fender PrecisionBass",
   "quantity": 10
 }

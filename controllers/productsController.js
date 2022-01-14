@@ -1,5 +1,5 @@
 const {
-  productList, productValidate,
+  productList, productValidate, productShow,
 } = require('../services/productsServices');
 
 const insert = async (req, res, next) => {
@@ -24,7 +24,21 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const getProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await productShow(id);
+    console.log('controller', product, id);
+    return res.status(422).json(product);
+  } catch (err) {
+    console.error(err.message);
+    next(err);
+    // return res.status(422).send(err.message);
+  }
+};
+
 module.exports = {
   insert,
   getAll,
+  getProduct,
 };

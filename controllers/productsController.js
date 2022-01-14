@@ -1,5 +1,6 @@
 const {
   productList, productValidate, productShow,
+  productWrite,
 } = require('../services/productsServices');
 
 const insert = async (req, res, next) => {
@@ -39,8 +40,25 @@ const getProduct = async (req, res, next) => {
   }
 };
 
+const updateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const product = await productWrite(id, name, quantity);
+    if (product.err) {
+      return res.status(422).json(product);
+    }
+    return res.status(200).json(product);
+  } catch (err) {
+    console.error(err.message);
+    next(err);
+    // return res.status(422).send(err.message);
+  }
+};
+
 module.exports = {
   insert,
   getAll,
   getProduct,
+  updateProduct,
 };

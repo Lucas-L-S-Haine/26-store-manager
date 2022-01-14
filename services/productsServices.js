@@ -12,15 +12,12 @@ const newError = (err) => (err);
 
 const newProductValidate = async (product) => {
   const { error } = productSchema.validate(product);
-
   if (error) {
     throw newError({ status: 422, message: error.message });
   }
-
   if (await productsModel.findProductByName(product.name)) {
     throw newError({ status: 422, message: 'Product already exists' });
   }
-
   const createdProduct = await productsModel.insertProduct(product);
   return createdProduct;
 };

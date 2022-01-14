@@ -12,8 +12,8 @@ productsRouter
 
 productsRouter
   .route('/:id')
-  .get(getProduct);
-//   .put()
-//   .delete();
+  .get(getProduct)
+  .put()
+  .delete();
 
 module.exports = productsRouter;

@@ -5,7 +5,7 @@ const connection = require('./connections');
 const insertSale = async (sale) => {
   const newConnection = await connection();
   const newSale = await newConnection
-    .collection('sales').insertOne(sale);
+    .collection('sales').insertOne({ itensSold: sale });
   return newSale;
 };
 

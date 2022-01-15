@@ -7,7 +7,8 @@ const insert = async (req, res, next) => {
   try {
     const sale = req.body;
     const response = await newSaleValidate(sale);
-    return res.status(201).json(response.ops[0]);
+    console.log(response.ops[0]);
+    return res.status(200).json(response.ops[0]);
   } catch (err) {
     // console.error('Error:', err.message);
     next(err);

@@ -18,13 +18,13 @@ const quantitySchema = Joi.number().min(1).required().messages({
 const newError = (err) => (err);
 
 const newSaleValidate = async (sale) => {
-  const { error } = saleSchema.validate(sale);
-  if (error) {
-    throw newError({ status: 422, message: error.message });
-  }
-  if (await salesModel.findSaleByName(sale.name)) {
-    throw newError({ status: 422, message: 'Sale already exists' });
-  }
+//   const { error } = saleSchema.validate(sale);
+//   if (error) {
+//     throw newError({ status: 422, message: error.message });
+//   }
+//   if (await salesModel.findSaleByName(sale.name)) {
+//     throw newError({ status: 422, message: 'Sale already exists' });
+//   }
   const createdSale = await salesModel.insertSale(sale);
   return createdSale;
 };

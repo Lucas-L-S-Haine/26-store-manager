@@ -35,8 +35,9 @@ const updateSale = async (id, productList) => {
   try {
     const saleId = new ObjectId(id);
     const newConnection = await connection();
+    console.log('productList', productList);
     await newConnection.collection('sales')
-      .updateOne({ _id: saleId }, { $set: { productList } });
+      .updateOne({ _id: saleId }, { $set: { itensSold: productList } });
     const sale = await newConnection.collection('sales').findOne(saleId);
     return sale;
   } catch (err) {

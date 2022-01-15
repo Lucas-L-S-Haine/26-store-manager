@@ -26,7 +26,7 @@ const findSaleById = async (id) => {
   } catch (err) {
     return { err: {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
     } };
   }
 };
@@ -43,7 +43,7 @@ const updateSale = async (id, name, quantity) => {
   } catch (err) {
     return { err: {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
     } };
   }
 };
@@ -59,7 +59,7 @@ const deleteSale = async (id) => {
   } catch (err) {
     return { err: {
       code: 'invalid_data',
-      message: 'Wrong id format',
+      message: 'Wrong sale ID format',
       status: 422,
     } };
   }

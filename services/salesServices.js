@@ -4,10 +4,7 @@ const salesModel = require('../models/salesModel');
 const saleSchema = Joi.array().items(
   Joi.object({
     productId: Joi.string().required(),
-    quantity: Joi.number().min(1).required().messages({
-      'number.min': 'xablau',
-      'number.base': 'xablamos',
-    }),
+    quantity: Joi.number().min(1).required(),
   }).required(),
 );
 

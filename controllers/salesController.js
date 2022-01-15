@@ -7,7 +7,6 @@ const insert = async (req, res, next) => {
   try {
     const sale = req.body;
     const response = await newSaleValidate(sale);
-    console.log(response.ops[0]);
     return res.status(200).json(response.ops[0]);
   } catch (err) {
     // console.error('Error:', err.message);
@@ -31,7 +30,7 @@ const getSale = async (req, res, next) => {
     const { id } = req.params;
     const sale = await saleShow(id);
     if (sale.err) {
-      return res.status(422).json(sale);
+      return res.status(404).json(sale);
     }
     return res.status(200).json(sale);
   } catch (err) {

@@ -25,8 +25,8 @@ const findSaleById = async (id) => {
     return sale;
   } catch (err) {
     return { err: {
-      code: 'invalid_data',
-      message: 'Wrong sale ID format',
+      code: 'not_found',
+      message: 'Sale not found',
     } };
   }
 };

@@ -1,30 +1,26 @@
 const Joi = require('@hapi/joi');
 const salesModel = require('../models/salesModel');
 
-const saleSchema = Joi.object({
-  name: Joi.string().min(5).required().messages({
-    'string.min': '"name" length must be at least 5 characters long',
-  }),
-  quantity: Joi.number().min(1).required(),
-});
-const nameSchema = Joi.string().min(5).required().messages({
-  'string.min': '"name" length must be at least 5 characters long',
-});
-const quantitySchema = Joi.number().min(1).required().messages({
-  'number.min': '"quantity" must be larger than or equal to 1',
-  'number.base': '"quantity" must be a number',
-});
+const saleSchema = Joi.array().items(
+  Joi.object({
+    productId: Joi.string().required(),
+    quantity: Joi.number().min(1).required().messages({
+      'number.min': 'xablau',
+      'number.base': 'xablamos',
+    }),
+  }).required(),
+);
 
 const newError = (err) => (err);
 
 const newSaleValidate = async (sale) => {
-//   const { error } = saleSchema.validate(sale);
-//   if (error) {
-//     throw newError({ status: 422, message: error.message });
-//   }
-//   if (await salesModel.findSaleByName(sale.name)) {
-//     throw newError({ status: 422, message: 'Sale already exists' });
-//   }
+  const { error } = saleSchema.validate(sale);
+  if (error) {
+    throw newError({
+      status: 422,
+      message: 'Wrong product ID or invalid quantity',
+    });
+  }
   const createdSale = await salesModel.insertSale(sale);
   return createdSale;
 };
@@ -40,14 +36,6 @@ const saleShow = async (id) => {
 };
 
 const updatedSaleValidate = async (id, name, quantity) => {
-  const nameValidate = nameSchema.validate(name);
-  const quantityValidate = quantitySchema.validate(quantity);
-  if (nameValidate.error) {
-    throw newError({ status: 422, message: nameValidate.error.message });
-  }
-  if (quantityValidate.error) {
-    throw newError({ status: 422, message: quantityValidate.error.message });
-  }
   const updatedSale = await salesModel
     .updateSale(id, name, quantity);
   return updatedSale;

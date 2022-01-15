@@ -63,7 +63,6 @@ const deleteProduct = async (req, res) => {
     return res.status(200).json(deletedProduct);
   } catch (err) {
     const { code, message, status } = err;
-    console.log(code, message, status);
     return res.status(status).json({ err: { code, message } });
   }
 };

@@ -62,8 +62,10 @@ const deleteSale = async (req, res) => {
     const deletedSale = await deletedSaleValidate(id);
     return res.status(200).json(deletedSale);
   } catch (err) {
+    if (!err) {
+      return res.status(333).json({ message: 'olá' });
+    }
     const { code, message, status } = err;
-    console.log(code, message, status);
     return res.status(status).json({ err: { code, message } });
   }
 };

@@ -1,16 +1,20 @@
 const express = require('express');
-const salesController = require('../controllers/salesController');
+const {
+  insert, getAll, getSale,
+  updateSale, deleteSale,
+} = require('../controllers/salesController');
 
 const salesRouter = express.Router();
 
-// router.post('/', async (req, res, next) => {
 salesRouter
   .route('/')
-  .post(salesController.insert)
-  .get((req, res) => res.status(200).send({ message: 'GET /sales works!' }));
-//   try {
-//     const insertedProduct = insert(req.body)
-//   } catch(err) {
-//   }
+  .post(insert)
+  .get(getAll);
+
+salesRouter
+  .route('/:id')
+  .get(getSale)
+  .put(updateSale)
+  .delete(deleteSale);
 
 module.exports = salesRouter;

@@ -43,8 +43,8 @@ const getSale = async (req, res, next) => {
 const updateSale = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, quantity } = req.body;
-    const sale = await updatedSaleValidate(id, name, quantity);
+    const productList = req.body;
+    const sale = await updatedSaleValidate(id, productList);
     if (sale.err) {
       return res.status(422).json(sale);
     }

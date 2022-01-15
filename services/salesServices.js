@@ -32,9 +32,16 @@ const saleShow = async (id) => {
   return listedSale;
 };
 
-const updatedSaleValidate = async (id, name, quantity) => {
+const updatedSaleValidate = async (id, productList) => {
+  const { error } = saleSchema.validate(productList);
+  if (error) {
+    throw newError({
+      status: 422,
+      message: 'Wrong product ID or invalid quantity',
+    });
+  }
   const updatedSale = await salesModel
-    .updateSale(id, name, quantity);
+    .updateSale(id, productList);
   return updatedSale;
 };
 

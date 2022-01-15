@@ -31,14 +31,13 @@ const findSaleById = async (id) => {
   }
 };
 
-const updateSale = async (id, name, quantity) => {
+const updateSale = async (id, productList) => {
   try {
     const saleId = new ObjectId(id);
     const newConnection = await connection();
     await newConnection.collection('sales')
-      .updateOne({ _id: saleId }, { $set: { name, quantity } });
-    const sale = await newConnection.collection('sales')
-      .findOne(saleId);
+      .updateOne({ _id: saleId }, { $set: { productList } });
+    const sale = await newConnection.collection('sales').findOne(saleId);
     return sale;
   } catch (err) {
     return { err: {

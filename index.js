@@ -19,4 +19,4 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.listen(port, () => console.log(`Application online on port ${port}.`));
+app.listen(port, () => console.log(`Application online on port \x1b[03;94m${port}\x1b[00m.`));

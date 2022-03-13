@@ -14,9 +14,6 @@ app.use('/products', productsRouter);
 app.use('/sales', salesRouter);
 app.use(errorMiddleware);
 
-// não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.send();
-});
+app.get('/', (_request, response) => response.send('Online!!!'));
 
 app.listen(port, () => console.log(`Application online on port \x1b[03;94m${port}\x1b[00m.`));

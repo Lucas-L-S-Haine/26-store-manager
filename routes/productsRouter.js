@@ -1,10 +1,10 @@
-const express = require('express');
+const { Router } = require('express');
 const {
   insert, getAll, getProduct,
   updateProduct, deleteProduct,
 } = require('../controllers/productsController');
 
-const productsRouter = express.Router();
+const productsRouter = Router();
 
 productsRouter
   .route('/')

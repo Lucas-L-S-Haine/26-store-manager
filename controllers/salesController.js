@@ -9,7 +9,6 @@ const insert = async (req, res, next) => {
     const response = await newSaleValidate(sale);
     return res.status(200).json(response.ops[0]);
   } catch (err) {
-    // console.error('Error:', err.message);
     next(err);
   }
 };
@@ -19,9 +18,7 @@ const getAll = async (req, res, next) => {
     const sales = await saleList();
     return res.status(200).json({ sales });
   } catch (err) {
-    console.error(err.message);
     next(err);
-    // return res.status(422).send(err.message);
   }
 };
 
@@ -34,9 +31,7 @@ const getSale = async (req, res, next) => {
     }
     return res.status(200).json(sale);
   } catch (err) {
-    console.error(err.message);
     next(err);
-    // return res.status(422).send(err.message);
   }
 };
 
@@ -50,9 +45,7 @@ const updateSale = async (req, res, next) => {
     }
     return res.status(200).json(sale);
   } catch (err) {
-    console.error(err.message);
     next(err);
-    // return res.status(422).send(err.message);
   }
 };
 

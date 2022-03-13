@@ -8,15 +8,12 @@ const saleSchema = Joi.array().items(
   }).required(),
 );
 
-const newError = (err) => (err);
-
 const newSaleValidate = async (sale) => {
   const { error } = saleSchema.validate(sale);
   if (error) {
-    throw newError({
-      status: 422,
-      message: 'Wrong product ID or invalid quantity',
-    });
+    error.status = 422;
+    error.message = 'Wrong product ID or invalid quantity';
+    throw error;
   }
   const createdSale = await salesModel.insertSale(sale);
   return createdSale;
@@ -35,10 +32,9 @@ const saleShow = async (id) => {
 const updatedSaleValidate = async (id, productList) => {
   const { error } = saleSchema.validate(productList);
   if (error) {
-    throw newError({
-      status: 422,
-      message: 'Wrong product ID or invalid quantity',
-    });
+    error.status = 422;
+    error.message = 'Wrong product ID or invalid quantity';
+    throw error;
   }
   const updatedSale = await salesModel
     .updateSale(id, productList);

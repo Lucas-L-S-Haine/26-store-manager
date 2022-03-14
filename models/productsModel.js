@@ -2,21 +2,21 @@ const { ObjectId } = require('mongodb');
 
 const connection = require('./connections');
 
-const insertProduct = async (product) => {
-  const newConnection = await connection();
-  const newProduct = await newConnection
-    .collection('products').insertOne(product);
-  return newProduct;
-};
-
-const findProductByName = async (name) => {
+const findOne = async (name) => {
   const newConnection = await connection();
   const product = await newConnection
     .collection('products').findOne({ name });
   return product;
 };
 
-const findProductById = async (id) => {
+const findAll = async () => {
+  const newConnection = await connection();
+  const productsList = await newConnection
+    .collection('products').find().toArray();
+  return productsList;
+};
+
+const findById = async (id) => {
   try {
     const productId = new ObjectId(id);
     const newConnection = await connection();
@@ -31,7 +31,14 @@ const findProductById = async (id) => {
   }
 };
 
-const updateProduct = async (id, name, quantity) => {
+const create = async (product) => {
+  const newConnection = await connection();
+  const newProduct = await newConnection
+    .collection('products').insertOne(product);
+  return newProduct;
+};
+
+const update = async (id, name, quantity) => {
   try {
     const productId = new ObjectId(id);
     const newConnection = await connection();
@@ -48,7 +55,7 @@ const updateProduct = async (id, name, quantity) => {
   }
 };
 
-const deleteProduct = async (id) => {
+const destroy = async (id) => {
   try {
     const productId = new ObjectId(id);
     const newConnection = await connection();
@@ -65,18 +72,11 @@ const deleteProduct = async (id) => {
   }
 };
 
-const listProducts = async () => {
-  const newConnection = await connection();
-  const productsList = await newConnection
-    .collection('products').find().toArray();
-  return productsList;
-};
-
 module.exports = {
-  insertProduct,
-  listProducts,
-  findProductById,
-  findProductByName,
-  updateProduct,
-  deleteProduct,
+  findOne,
+  findAll,
+  findById,
+  create,
+  update,
+  destroy,
 };

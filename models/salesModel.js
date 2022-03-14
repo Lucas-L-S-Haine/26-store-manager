@@ -2,21 +2,14 @@ const { ObjectId } = require('mongodb');
 
 const connection = require('./connections');
 
-const insertSale = async (sale) => {
+const findAll = async () => {
   const newConnection = await connection();
-  const newSale = await newConnection
-    .collection('sales').insertOne({ itensSold: sale });
-  return newSale;
+  const salesList = await newConnection
+    .collection('sales').find().toArray();
+  return salesList;
 };
 
-const findSaleByName = async (name) => {
-  const newConnection = await connection();
-  const sale = await newConnection
-    .collection('sales').findOne({ name });
-  return sale;
-};
-
-const findSaleById = async (id) => {
+const findById = async (id) => {
   try {
     const saleId = new ObjectId(id);
     const newConnection = await connection();
@@ -31,7 +24,14 @@ const findSaleById = async (id) => {
   }
 };
 
-const updateSale = async (id, productList) => {
+const create = async (sale) => {
+  const newConnection = await connection();
+  const newSale = await newConnection
+    .collection('sales').insertOne({ itensSold: sale });
+  return newSale;
+};
+
+const update = async (id, productList) => {
   try {
     const saleId = new ObjectId(id);
     const newConnection = await connection();
@@ -47,14 +47,12 @@ const updateSale = async (id, productList) => {
   }
 };
 
-const deleteSale = async (id) => {
+const destroy = async (id) => {
   try {
     const saleId = new ObjectId(id);
     const newConnection = await connection();
-    console.log('model');
     const sale = await newConnection.collection('sales')
       .findOne(saleId);
-    console.log('model', sale);
     await newConnection.collection('sales').deleteOne({ _id: saleId });
     return sale;
   } catch (err) {
@@ -66,18 +64,10 @@ const deleteSale = async (id) => {
   }
 };
 
-const listSales = async () => {
-  const newConnection = await connection();
-  const salesList = await newConnection
-    .collection('sales').find().toArray();
-  return salesList;
-};
-
 module.exports = {
-  insertSale,
-  listSales,
-  findSaleById,
-  findSaleByName,
-  updateSale,
-  deleteSale,
+  findAll,
+  findById,
+  create,
+  update,
+  destroy,
 };

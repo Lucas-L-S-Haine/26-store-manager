@@ -1,45 +1,43 @@
-const {
-  productList, newProductValidate, productShow,
-  updatedProductValidate, deletedProductValidate,
-} = require('../services/productsServices');
+const service = require('../services/productsServices');
 
-const insert = async (req, res, next) => {
+const readOne = async (req, res, next) => {
   try {
-    const product = req.body;
-    const response = await newProductValidate(product);
-    return res.status(201).json(response.ops[0]);
+    const { id } = req.params;
+    const product = await service.readOne(id);
+    if (product.err) {
+      return res.status(422).json(product);
+    }
+    return res.status(200).json(product);
   } catch (err) {
     next(err);
   }
 };
 
-const getAll = async (req, res, next) => {
+// const readOne = (req, res, next) => service
+//   .readOne(req.params.id)
+//   .then((product) => res.status(200).json(product))
+//   .catch(next);
+
+const readAll = async (req, res, next) => {
   try {
-    const products = await productList();
+    const products = await service.readAll();
     return res.status(200).json({ products });
   } catch (err) {
     next(err);
   }
 };
 
-const getProduct = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const product = await productShow(id);
-    if (product.err) {
-      return res.status(422).json(product);
-    }
-    return res.status(200).json(product);
-  } catch (err) {
-    next(err);
-  }
-};
+const createOne = (req, res, next) => service
+  .createOne(req.body)
+  .then(({ ops }) => ops)
+  .then(([product]) => res.status(201).json(product))
+  .catch(next);
 
-const updateProduct = async (req, res, next) => {
+const updateOne = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
-    const product = await updatedProductValidate(id, name, quantity);
+    const product = await service.updateOne(id, name, quantity);
     if (product.err) {
       return res.status(422).json(product);
     }
@@ -49,10 +47,10 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteOne = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedProduct = await deletedProductValidate(id);
+    const deletedProduct = await service.deleteOne(id);
     return res.status(200).json(deletedProduct);
   } catch (err) {
     const { code, message, status } = err;
@@ -61,9 +59,9 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  insert,
-  getAll,
-  getProduct,
-  updateProduct,
-  deleteProduct,
+  readOne,
+  readAll,
+  createOne,
+  updateOne,
+  deleteOne,
 };

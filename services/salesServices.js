@@ -8,41 +8,40 @@ const saleSchema = Joi.array().items(
   }).required(),
 );
 
-const newSaleValidate = async (sale) => {
+const createOne = async (sale) => {
   const { error } = saleSchema.validate(sale);
   if (error) {
     error.status = 422;
     error.message = 'Wrong product ID or invalid quantity';
     throw error;
   }
-  const createdSale = await salesModel.insertSale(sale);
+  const createdSale = await salesModel.create(sale);
   return createdSale;
 };
 
-const saleList = async () => {
-  const list = await salesModel.listSales();
+const readAll = async () => {
+  const list = await salesModel.findAll();
   return list;
 };
 
-const saleShow = async (id) => {
-  const listedSale = await salesModel.findSaleById(id);
+const readOne = async (id) => {
+  const listedSale = await salesModel.findById(id);
   return listedSale;
 };
 
-const updatedSaleValidate = async (id, productList) => {
+const updateOne = async (id, productList) => {
   const { error } = saleSchema.validate(productList);
   if (error) {
     error.status = 422;
     error.message = 'Wrong product ID or invalid quantity';
     throw error;
   }
-  const updatedSale = await salesModel
-    .updateSale(id, productList);
+  const updatedSale = await salesModel.update(id, productList);
   return updatedSale;
 };
 
-const deletedSaleValidate = async (id) => {
-  const deletedSale = await salesModel.deleteSale(id);
+const deleteOne = async (id) => {
+  const deletedSale = await salesModel.destroy(id);
   if (deletedSale.err) {
     throw deletedSale.err;
   }
@@ -50,9 +49,9 @@ const deletedSaleValidate = async (id) => {
 };
 
 module.exports = {
-  newSaleValidate,
-  saleList,
-  saleShow,
-  updatedSaleValidate,
-  deletedSaleValidate,
+  createOne,
+  readAll,
+  readOne,
+  updateOne,
+  deleteOne,
 };

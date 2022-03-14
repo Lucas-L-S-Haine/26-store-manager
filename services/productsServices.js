@@ -15,46 +15,49 @@ const quantitySchema = Joi.number().min(1).required().messages({
   'number.base': '"quantity" must be a number',
 });
 
-const newError = (err) => (err);
-
-const newProductValidate = async (product) => {
+const createOne = async (product) => {
   const { error } = productSchema.validate(product);
   if (error) {
-    throw newError({ status: 422, message: error.message });
+    error.status = 422;
+    throw error;
   }
-  if (await productsModel.findProductByName(product.name)) {
-    throw newError({ status: 422, message: 'Product already exists' });
+  if (await productsModel.findOne(product.name)) {
+    const insertError = new Error();
+    insertError.message = 'Product already exists';
+    insertError.status = 422;
+    throw insertError;
   }
-  const createdProduct = await productsModel.insertProduct(product);
+  const createdProduct = await productsModel.create(product);
   return createdProduct;
 };
 
-const productList = async () => {
-  const list = await productsModel.listProducts();
+const readAll = async () => {
+  const list = await productsModel.findAll();
   return list;
 };
 
-const productShow = async (id) => {
-  const listedProduct = await productsModel.findProductById(id);
+const readOne = async (id) => {
+  const listedProduct = await productsModel.findById(id);
   return listedProduct;
 };
 
-const updatedProductValidate = async (id, name, quantity) => {
-  const nameValidate = nameSchema.validate(name);
-  const quantityValidate = quantitySchema.validate(quantity);
-  if (nameValidate.error) {
-    throw newError({ status: 422, message: nameValidate.error.message });
+const updateOne = async (id, name, quantity) => {
+  const { error: nameError } = nameSchema.validate(name);
+  const { error: quantityError } = quantitySchema.validate(quantity);
+  if (nameError) {
+    nameError.status = 422;
+    throw nameError;
   }
-  if (quantityValidate.error) {
-    throw newError({ status: 422, message: quantityValidate.error.message });
+  if (quantityError) {
+    quantityError.status = 422;
+    throw quantityError;
   }
-  const updatedProduct = await productsModel
-    .updateProduct(id, name, quantity);
+  const updatedProduct = await productsModel.update(id, name, quantity);
   return updatedProduct;
 };
 
-const deletedProductValidate = async (id) => {
-  const deletedProduct = await productsModel.deleteProduct(id);
+const deleteOne = async (id) => {
+  const deletedProduct = await productsModel.destroy(id);
   if (deletedProduct.err) {
     throw deletedProduct.err;
   }
@@ -62,9 +65,9 @@ const deletedProductValidate = async (id) => {
 };
 
 module.exports = {
-  newProductValidate,
-  productList,
-  productShow,
-  updatedProductValidate,
-  deletedProductValidate,
+  createOne,
+  readAll,
+  readOne,
+  updateOne,
+  deleteOne,
 };

@@ -1,20 +1,20 @@
 const { Router } = require('express');
 const {
-  insert, getAll, getSale,
-  updateSale, deleteSale,
+  readOne, readAll,
+  createOne, updateOne, deleteOne,
 } = require('../controllers/salesController');
 
 const salesRouter = Router();
 
 salesRouter
   .route('/')
-  .post(insert)
-  .get(getAll);
+  .get(readAll)
+  .post(createOne);
 
 salesRouter
   .route('/:id')
-  .get(getSale)
-  .put(updateSale)
-  .delete(deleteSale);
+  .get(readOne)
+  .put(updateOne)
+  .delete(deleteOne);
 
 module.exports = salesRouter;
